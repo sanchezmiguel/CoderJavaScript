@@ -1,45 +1,61 @@
 // main.js
 
 function calculateLoan() {
-    // Obtener valores del formulario
-    const loanAmount = parseFloat(document.getElementById('amount').value);
-    const interestRate = parseFloat(document.getElementById('interestRate').value);
-    const loanTerm = parseInt(document.getElementById('loanTerm').value);
+    let continueCalculations = true;
 
-    // Calcular la tasa de interés mensual
-    let monthlyInterestRate = (interestRate / 100) / 12;
+    while (continueCalculations) {
+        const loanAmountInput = prompt("Ingrese monto del préstamo:");
+        const interestRateInput = prompt("Ingrese tasa de interés (%):");
+        const loanTermInput = prompt("Ingrese plazo del préstamo en meses:");
 
-    // Calcular el número total de pagos
-    let numberOfPayments = loanTerm;
+        // Validar que los valores ingresados sean numéricos y no nulos
+        if (!isValidInput(loanAmountInput) || !isValidInput(interestRateInput) || !isValidInput(loanTermInput)) {
+            alert("Por favor, ingrese valores numéricos válidos.");
+            continue; // Reinicia el bucle sin realizar cálculos
+        }
 
-    // Calcular el factor de amortización
-    let amortizationFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))
-        / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+        const loanAmount = parseFloat(loanAmountInput);
+        const interestRate = parseFloat(interestRateInput);
+        const loanTerm = parseInt(loanTermInput);
 
-    // Calcular el pago mensual
-    let monthlyPayment = loanAmount * amortizationFactor;
+        // Validar que los valores sean números positivos y no excedan un valor máximo
+        const maxAllowedValue = 1000000;
+        if (!isValidPositiveNumber(loanAmount) || !isValidPositiveNumber(interestRate)
+            || !isValidPositiveNumber(loanTerm) || loanAmount > maxAllowedValue
+            || interestRate > maxAllowedValue || loanTerm > maxAllowedValue) {
+            alert(`Por favor, ingrese valores numéricos positivos que no excedan ${maxAllowedValue}.`);
+            continue; // Reinicia el bucle sin realizar cálculos
+        }
 
-    // Mostrar los resultados
-    displayResults(monthlyPayment, numberOfPayments);
-}
+        // Calcular la tasa de interés mensual
+        let monthlyInterestRate = (interestRate / 100) / 12;
 
-function displayResults(monthlyPayment, numberOfPayments) {
-    const resultDiv = document.getElementById('result');
-    let totalAmount = monthlyPayment * numberOfPayments;
+        // Calcular el número total de pagos
+        let numberOfPayments = loanTerm;
 
-    resultDiv.innerHTML = `<h2>Resultado</h2>`;
-    resultDiv.innerHTML += `<p>Pago Mensual Estimado: ${monthlyPayment.toFixed(2)} USD</p>`;
-    resultDiv.innerHTML += `<p>Total a Pagar: ${totalAmount.toFixed(2)} USD</p>`;
+        // Calcular el factor de amortización
+        let amortizationFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))
+            / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
 
-    let i = 0;
-    let message = "¡Gracias por usar nuestro simulador! ";
+        // Calcular el pago mensual
+        let monthlyPayment = loanAmount * amortizationFactor;
 
-    while (i < 5) {
-        message += "🚀 ";
-        i++;
+        // Mostrar los resultados
+        alert("Resultado\n\n" +
+            "Pago Mensual Estimado: " + monthlyPayment.toFixed(2) + " USD\n" +
+            "Total a Pagar: " + (monthlyPayment * numberOfPayments).toFixed(2) + " USD\n" +
+            "¡Gracias por usar nuestro simulador! 🚀 ");
+
+        // Preguntar al usuario si desea realizar otra operación
+        const userInput = prompt("¿Desea realizar otra operación? (Sí/No)").toLowerCase();
+        continueCalculations = userInput === 'si' || userInput === 'sí';
     }
-
-    // Agregar el mensaje al resultado
-    resultDiv.innerHTML += `<p>${message}</p>`;
 }
 
+function isValidInput(value) {
+    return value !== null && value !== '' && !isNaN(value);
+}
+
+function isValidPositiveNumber(value) {
+    return isValidInput(value) && parseFloat(value) > 0;
+}
