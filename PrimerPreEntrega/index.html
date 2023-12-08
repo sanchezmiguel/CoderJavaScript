@@ -4,39 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Créditos</title>
-
-    <!-- Enlace a Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Simulador de Créditos</h1>
 
+    <p>
+        Bienvenido al Simulador de Créditos. Esta aplicación te permite calcular el pago mensual y el total a pagar
+        para un préstamo con diferentes opciones.
+    </p>
+
+    <h2 class="mt-4">Instrucciones:</h2>
+    <ol>
+        <li>Ingresa el monto del préstamo, la tasa de interés (en porcentaje), y el plazo del préstamo en meses.</li>
+        <li>Puedes ingresar un pago adicional mensual (opcional) para ver cómo afecta la amortización del préstamo.</li>
+        <li>Haz clic en el botón "Calcular" para obtener los resultados.</li>
+        <li>Los resultados incluirán el pago mensual estimado, el total a pagar y detalles de amortización si se ingresó un pago adicional.</li>
+        <li>Si deseas realizar otra operación, se te solicitará nuevamente la información.</li>
+    </ol>
+
     <form id="creditForm">
-        <!-- Formulario usando clases de Bootstrap -->
-<!--        <div class="mb-3">-->
-<!--            <label for="amount" class="form-label">Monto del Préstamo:</label>-->
-<!--            <input type="number" class="form-control" id="amount" required>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <label for="interestRate" class="form-label">Tasa de Interés Anual (%):</label>-->
-<!--            <input type="number" class="form-control" id="interestRate" required>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <label for="loanTerm" class="form-label">Duración del Préstamo (meses):</label>-->
-<!--            <input type="number" class="form-control" id="loanTerm" required>-->
-<!--        </div>-->
-
         <button type="button" class="btn btn-primary" onclick="calculateLoan()">Calcular</button>
     </form>
-
-    <div id="result" class="mt-4">
-        <!-- Resultados se muestran aca -->
-    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
+
