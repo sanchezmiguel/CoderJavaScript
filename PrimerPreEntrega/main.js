@@ -16,6 +16,7 @@ class Prestamo {
     }
 
     calcularTotalPagar() {
+        this.calcularMensualidad(); // Asegurarse de que la mensualidad esté calculada
         this.totalPagar = this.mensualidad * this.plazoMeses;
     }
 
@@ -44,7 +45,6 @@ class Persona {
 // Array de personas
 const personas = [];
 
-// Funciones esenciales
 // Funciones de validación
 function validarMonto(monto) {
     return !isNaN(monto) && monto > 0;
@@ -141,25 +141,42 @@ function agregarNuevaPersonaConPrestamo(nuevaPersona) {
     personas.push(nuevaPersona);
 }
 
+function mostrarInformacionPrestamo(persona, prestamo, index) {
+    prestamo.calcularTotalPagar();
+
+    console.log(`Préstamo ${index + 1} para ${persona.nombre}`);
+    console.log("Monto solicitado $: " + prestamo.monto);
+    console.log("Mensualidad (valor cuota): $" + prestamo.mensualidad.toFixed(2));
+    console.log("Cantidad de Cuotas: " + prestamo.plazoMeses);
+    console.log("Total a pagar: $" + prestamo.totalPagar.toFixed(2));
+    console.log(" ");
+    console.log("Tasa de interés Mensual: " + (prestamo.tasaInteres * 100).toFixed(2) + "%");
+    console.log("Tasa de interés Anual: " + (prestamo.tasaInteres * 12 * 100).toFixed(2) + "%");
+    console.log("Interés Mensual: $" + prestamo.calcularInteresMensual(prestamo.mensualidad).toFixed(2));
+    console.log("Interés Anual: $" + prestamo.calcularInteresAnual().toFixed(2));
+    console.log("--------------------");
+}
+
 function mostrarResultado() {
     for (let i = 0; i < personas.length; i++) {
         const persona = personas[i];
 
         for (let j = 0; j < persona.prestamos.length; j++) {
             const prestamo = persona.prestamos[j];
-
-
-            console.log(`Préstamo ${j + 1} para ${persona.nombre}`);
-            console.log("Mensualidad: $" + prestamo.mensualidad.toFixed(2));
-            console.log("Total a pagar: $" + prestamo.totalPagar.toFixed(2));
-            console.log("Tasa de interés: " + (prestamo.tasaInteres * 12 * 100).toFixed(2) + "%");
-            console.log("Interés Mensual: $" + prestamo.calcularInteresMensual(prestamo.mensualidad).toFixed(2));
-            console.log("Interés Anual: $" + prestamo.calcularInteresAnual().toFixed(2));
-            console.log("--------------------");
+            mostrarInformacionPrestamo(persona, prestamo, j);
         }
     }
 }
 
+function mostrarPrestamosEncontrados(prestamosEncontrados) {
+    if (prestamosEncontrados.length === 0) {
+        console.log("No se encontraron préstamos.");
+    } else {
+        prestamosEncontrados.forEach(({persona, prestamo}, index) => {
+            mostrarInformacionPrestamo(persona, prestamo, index);
+        });
+    }
+}
 function buscarPorMensualidad(mensualidadBuscada) {
     const prestamosEncontrados = [];
 
@@ -254,22 +271,6 @@ function mostrarBusquedaFiltrado() {
             default:
                 console.log("Opción no válida. Inténtelo de nuevo.");
         }
-    }
-}
-
-function mostrarPrestamosEncontrados(prestamosEncontrados) {
-    if (prestamosEncontrados.length === 0) {
-        console.log("No se encontraron préstamos.");
-    } else {
-        prestamosEncontrados.forEach(({persona, prestamo}, index) => {
-            console.log(`Préstamo ${index + 1} para ${persona.nombre}`);
-            console.log("Mensualidad: $" + prestamo.mensualidad.toFixed(2));
-            console.log("Total a pagar: $" + prestamo.totalPagar.toFixed(2));
-            console.log("Tasa de interés: " + (prestamo.tasaInteres * 100).toFixed(2) + "%");
-            console.log("Interés Mensual: $" + ((prestamo.mensualidad * prestamo.plazoMeses) - prestamo.monto).toFixed(2));
-            console.log("Interés Anual: $" + ((prestamo.totalPagar) - prestamo.monto).toFixed(2));
-            console.log("--------------------");
-        });
     }
 }
 
