@@ -1,44 +1,66 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Simulador de Créditos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Segunda pre entrega: Estructura, variables y objetos - Proyecto de Préstamos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, p {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+<h1>Segunda pre entrega: Estructura, variables y objetos</h1>
+<p>Este programa te permite realizar cálculos de préstamos y gestionarlos. Puedes realizar las siguientes
+    operaciones:</p>
 
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-body">
-            <h1 class="card-title">Simulador de Créditos</h1>
-            <p class="card-text">
-                Bienvenido al Simulador de Créditos. Esta aplicación te permite calcular el pago mensual y el total a
-                pagar
-                para un préstamo con diferentes opciones.
-            </p>
-            <p>Autor: Pablo Miguel Sanchez</p>
-            <p>Curso: Comisión 49830 JavaScript</p>
-        </div>
-    </div>
+<h2>Operaciones Disponibles:</h2>
+<ul>
+    <li><strong>1. Calcular nuevo préstamo:</strong> Ingresa el monto del préstamo, la tasa de interés anual y el plazo
+        en meses para calcular la mensualidad y el total a pagar.
+    </li>
+    <li><strong>2. Mostrar resultados:</strong> Muestra los resultados de los préstamos calculados, incluyendo la
+        mensualidad, el total a pagar, la tasa de interés, el interés mensual y el interés anual.
+    </li>
+    <li>
+        <strong>3. Buscar y Filtrar:</strong> Realiza búsquedas y filtrados en los préstamos existentes.
+        <ul>
+            <li>3.1 Buscar por mensualidad</li>
+            <li>3.2 Filtrar por tasa de interés</li>
+            <li>3.3 Filtrar por monto inicial</li>
+            <li>3.4 Filtrar por plazo en meses</li>
+        </ul>
+    </li>
+    <li><strong>4. Listar Personas:</strong> Muestra el listado de personas registradas, incluyendo su nombre, teléfono
+        y la cantidad de préstamos que tienen.
+    </li>
+    <li><strong>5. Salir:</strong> Finaliza el programa.</li>
+</ul>
 
-    <h2 class="mt-4">Instrucciones:</h2>
-    <ol>
-        <li>Ingresa el monto del préstamo, la tasa de interés (en porcentaje), y el plazo del préstamo en meses.</li>
-        <li>Puedes ingresar un pago adicional mensual (opcional) para ver cómo afecta la amortización del préstamo.</li>
-        <li>Haz clic en el botón "Calcular" para obtener los resultados.</li>
-        <li>Los resultados incluirán el pago mensual estimado, el total a pagar y detalles de amortización si se ingresó
-            un pago adicional.
-        </li>
-        <li>Si deseas realizar otra operación, se te solicitará nuevamente la información.</li>
-    </ol>
+<p><em>Nota: Los resultados de las operaciones se muestran en la consola del navegador.</em></p>
 
-    <form id="creditForm">
-        <button class="btn btn-primary" onclick="calculateLoan()" type="button">Calcular</button>
-    </form>
-</div>
+<p><strong>Segunda pre entrega:</strong> Estructura, variables y objetos para el curso de Javascript</p>
+<p><strong>Comisión:</strong> 49830</p>
+<p><strong>Autor:</strong> Pablo Miguel Sanchez Serrano</p>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="main.js"></script>
+<button id="calcularBtn">Calcular</button>
+<script src="./main.js"></script>
+<script>
+    // Event listener para el clic en el botón
+    document.getElementById("calcularBtn").addEventListener("click", function () {
+        ejecutarOpcion();
+    });
+</script>
 </body>
 </html>
