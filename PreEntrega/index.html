@@ -19,6 +19,9 @@
     <label for="loanTerm">Plazo del préstamo (en meses):</label>
     <input type="number" id="loanTerm" required>
 
+    <label for="currency">Tipo de moneda:</label>
+    <select id="currency" required></select>
+
     <button type="button" onclick="calcularCuota()">Calcular Cuota</button>
 </form>
 
@@ -36,7 +39,7 @@
 </table>
 <button onclick="vaciarHistorial()">Vaciar Historial</button>
 
-<script src="main.js"></script>
+<script type="module" src="main.js"></script>
 
 </body>
 </html>
