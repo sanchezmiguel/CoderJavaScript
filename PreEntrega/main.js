@@ -1,12 +1,13 @@
 // main.js
 
 class Resultado {
-    constructor(montoPrestamo, tasaInteres, plazoPrestamo, cuota) {
+    constructor(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual, totalPrestamo) {
         this.montoPrestamo = montoPrestamo;
         this.tasaInteres = tasaInteres;
         this.plazoPrestamo = plazoPrestamo;
-        this.cuota = cuota;
-        this.fecha = new Date(); // Puedes incluir la fecha en la que se generó el resultado
+        this.cuotaMensual = cuotaMensual;
+        this.totalPrestamo = totalPrestamo;
+        this.fecha = new Date(); // fecha en la que se generó el resultado
     }
 }
 
@@ -43,11 +44,12 @@ function calcularCuota() {
 
     const tasaMensual = (tasaInteres / 100) / 12;
     const cuotaMensual = (montoPrestamo * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazoPrestamo));
+    const totalPrestamo = cuotaMensual * plazoPrestamo;
 
-    resultadoElemento.textContent = `Cuota mensual: $${cuotaMensual.toFixed(2)}`;
+    resultadoElemento.textContent = `Cuota mensual: $${cuotaMensual.toFixed(2)}, Total del préstamo: $${totalPrestamo.toFixed(2)}`;
 
     // Crear una instancia de la clase Resultado y agregarlo a la lista
-    const nuevoResultado = new Resultado(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual);
+    const nuevoResultado = new Resultado(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual, totalPrestamo);
     resultados.push(nuevoResultado);
 
     // Actualizar la tabla de resultados
@@ -63,6 +65,12 @@ function actualizarTablaResultados() {
     resultados.forEach((resultado, index) => {
         const newRow = resultsBody.insertRow();
         const cell = newRow.insertCell(0);
-        cell.textContent = `Resultado ${index + 1}: Monto: $${resultado.montoPrestamo}, Tasa: ${resultado.tasaInteres}%, Plazo: ${resultado.plazoPrestamo} meses, Cuota: $${resultado.cuota.toFixed(2)} - Fecha: ${resultado.fecha.toLocaleString()}`;
+        cell.innerHTML = `Resultado ${index + 1}: 
+                      Monto: $${resultado.montoPrestamo}, 
+                      Tasa: ${resultado.tasaInteres}%, 
+                      Plazo: ${resultado.plazoPrestamo} meses, 
+                      Cuota: $${resultado.cuotaMensual.toFixed(2)}, 
+                      Total del préstamo: $${resultado.totalPrestamo.toFixed(2)}, 
+                      Fecha: ${resultado.fecha.toLocaleString()}`;
     });
 }
