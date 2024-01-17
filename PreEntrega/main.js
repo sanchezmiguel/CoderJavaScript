@@ -1,17 +1,17 @@
 // main.js
 
-// Importar la clase Resultado desde el archivo resultado.js
 import Resultado from './resultado.js';
+import Moneda from './moneda.js';
 
 // Lista para almacenar los resultados
 const resultados = [];
 
 // Lista de tipos de monedas
 const tiposMoneda = [
-    { codigo: "USD", nombre: "Dólar estadounidense" },
-    { codigo: "UYU", nombre: "Peso Uruguayo" },
-    { codigo: "EUR", nombre: "Euro" },
-    { codigo: "GBP", nombre: "Libra esterlina" },
+  new Moneda("USD", "Dólar estadounidense"),
+  new Moneda("UYU", "Peso Uruguayo"),
+  new Moneda("EUR", "Euro"),
+  new Moneda("GBP", "Libra esterlina"),
 ];
 
 // Función para cargar tipos de moneda en la lista desplegable
@@ -29,6 +29,7 @@ function cargarTiposMoneda() {
 // Llamar a la función para cargar tipos de moneda al cargar la página
 cargarTiposMoneda();
 
+document.getElementById('clearHistoryButton').addEventListener('click', vaciarHistorial);
 function vaciarHistorial() {
     resultados.length = 0;
     actualizarTablaResultados();
@@ -80,13 +81,23 @@ function actualizarTablaResultados() {
 
     resultados.forEach((resultado, index) => {
         const newRow = resultsBody.insertRow();
-        const cell = newRow.insertCell(0);
-        cell.innerHTML = `Resultado ${index + 1}: 
-                      Monto: $${resultado.montoPrestamo} ${resultado.tipoMoneda}, 
-                      Tasa: ${resultado.tasaInteres}%, 
-                      Plazo: ${resultado.plazoPrestamo} meses, 
-                      Cuota: $${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}, 
-                      Total del préstamo: $${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}, 
-                      Fecha: ${resultado.fecha.toLocaleString()}`;
+
+        // Columnas de la fila
+        const columns = [
+            `Resultado ${index + 1}`,
+            `$${resultado.montoPrestamo} ${resultado.tipoMoneda}`,
+            `${resultado.tasaInteres}%`,
+            `${resultado.plazoPrestamo} meses`,
+            `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
+            `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
+            resultado.fecha.toLocaleString()
+        ];
+
+        // Agregar celdas a la fila
+        columns.forEach((column) => {
+            const cell = newRow.insertCell();
+            cell.textContent = column;
+        });
     });
 }
+

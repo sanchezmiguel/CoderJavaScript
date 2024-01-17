@@ -29,15 +29,22 @@
 <p id="result"></p>
 
 <h3>Historial de Resultados:</h3>
+<button id="clearHistoryButton">Vaciar Historial</button>
 <table id="resultsTable">
     <thead>
     <tr>
+        <th>Resultado</th>
+        <th>Monto</th>
+        <th>Tasa de Interés</th>
+        <th>Plazo</th>
         <th>Cuota Mensual</th>
+        <th>Total del Préstamo</th>
+        <th>Fecha</th>
     </tr>
     </thead>
     <tbody id="resultsBody"></tbody>
 </table>
-<button onclick="vaciarHistorial()">Vaciar Historial</button>
+
 
 <script type="module" src="main.js"></script>
 
