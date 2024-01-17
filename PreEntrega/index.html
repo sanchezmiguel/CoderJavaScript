@@ -35,8 +35,19 @@
     <button type="button" onclick="calcularCuota()" class="btn btn-primary">Calcular Cuota</button>
 </form>
 
-<h3 class="mt-4">Resultado:</h3>
-<p id="result"></p>
+<div class="card mt-4">
+    <h3 class="card-header">Resultado</h3>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="card-text"><strong>Cuota Mensual:</strong> <span id="monthlyPayment"></span></p>
+            </div>
+            <div class="col-md-6">
+                <p class="card-text"><strong>Total del Préstamo:</strong> <span id="totalLoan"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <h3>Historial de Resultados:</h3>
 <button id="clearHistoryButton" class="btn btn-danger mb-3">Vaciar Historial</button>
@@ -46,6 +57,7 @@
         <th>Resultado</th>
         <th>Monto</th>
         <th>Tasa de Interés</th>
+        <th>Interés Extra</th>
         <th>Plazo</th>
         <th>Cuota Mensual</th>
         <th>Total del Préstamo</th>
