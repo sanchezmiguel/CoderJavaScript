@@ -1,10 +1,13 @@
 // moneda.js
 
-class Moneda {
-    constructor(codigo, nombre) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-    }
-}
+// QUEDA COMENTADO PARA CUANDO VEAMOS COMO IMPORTAR MODULOS
+
+
+// class Moneda {
+//     constructor(codigo, nombre) {
+//         this.codigo = codigo;
+//         this.nombre = nombre;
+//     }
+// }
 
 export default Moneda;

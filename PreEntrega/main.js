@@ -1,7 +1,23 @@
 // main.js
 
-import Resultado from './resultado.js';
-import Moneda from './moneda.js';
+class Resultado {
+    constructor(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual, totalPrestamo, tipoMoneda) {
+        this.montoPrestamo = montoPrestamo;
+        this.tasaInteres = tasaInteres;
+        this.plazoPrestamo = plazoPrestamo;
+        this.cuotaMensual = cuotaMensual;
+        this.totalPrestamo = totalPrestamo;
+        this.tipoMoneda = tipoMoneda;
+        this.fecha = new Date(); // fecha en la que se generó el resultado
+    }
+}
+
+class Moneda {
+    constructor(codigo, nombre) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+    }
+}
 
 // Lista para almacenar los resultados
 const resultados = [];
@@ -40,7 +56,7 @@ function vaciarHistorial() {
 
 // Función para formatear la moneda
 function formatearMoneda(valor, tipoMoneda) {
-    return new Intl.NumberFormat('es', { style: 'currency', currency: tipoMoneda }).format(valor);
+    return new Intl.NumberFormat('es', {style: 'currency', currency: tipoMoneda}).format(valor);
 }
 
 
@@ -149,7 +165,7 @@ function actualizarFiltroMoneda() {
 }
 
 // función para filtrar resultados
-window.filtrarResultados = function() {
+window.filtrarResultados = function () {
     const currencyFilterSelect = document.getElementById('currencyFilter');
     const selectedCurrency = currencyFilterSelect.value;
 
