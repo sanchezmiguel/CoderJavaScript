@@ -30,4 +30,4 @@ Esta aplicación web permite calcular préstamos con diferentes monedas y visual
 
 ## Acceso al Repositorio
 
-[Enlace al Repositorio en GitHub](https://github.com/sanchezmiguel/CoderJavaScriptB)
+[Enlace al Repositorio en GitHub](https://github.com/sanchezmiguel/CoderJavaScript)
