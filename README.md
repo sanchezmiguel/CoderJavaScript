@@ -1,37 +1,33 @@
-# Préstamos Javascript - Proyecto CoderHouse
+# Calculadora de Préstamos Javascript - Proyecto CoderHouse
 
-Este repositorio contiene un programa en Javascript diseñado para realizar cálculos relacionados con préstamos. Este proyecto fue creado como parte del curso de Javascript en CoderHouse.
+Esta aplicación web permite calcular préstamos con diferentes monedas y visualizar un historial de resultados. Desarrollado por Pablo Miguel Sanchez.
 
-## Funcionalidades Principales
+## Funcionalidades Implementadas
 
-1. **Calcular Nuevo Préstamo:**
-   - Permite al usuario ingresar el monto del préstamo, la tasa de interés anual y el plazo en meses para calcular la mensualidad y el total a pagar.
+### Calculadora de Cuotas
 
-2. **Mostrar Resultados:**
-   - Muestra los resultados detallados de los préstamos calculados, incluyendo la mensualidad, el total a pagar, la tasa de interés, el interés mensual y el interés anual.
+- Ingresar monto del préstamo, tasa de interés y plazo en meses.
+- Seleccionar el tipo de moneda (Dólar estadounidense, Peso Uruguayo, Euro, Libra esterlina).
+- Calcular la cuota mensual y el total del préstamo.
 
-3. **Buscar y Filtrar:**
-   - Ofrece opciones para realizar búsquedas y filtrados en los préstamos existentes, incluyendo búsqueda por mensualidad y filtrado por tasa de interés, monto inicial y plazo en meses.
+### Historial de Resultados
 
-4. **Listar Personas:**
-   - Muestra un listado de personas registradas, incluyendo su nombre, teléfono y la cantidad de préstamos que tienen.
+- Visualizar un historial de resultados con detalles como monto, tasa de interés, plazo, cuota mensual y total del préstamo.
+- Filtrar resultados por tipo de moneda.
 
-5. **Salir:**
-   - Finaliza el programa.
+### Funcionalidad Extra
+
+- Interés adicional para monedas distintas al dólar.
+
+### Interfaz de Usuario Mejorada
+
+- Utilización de cards de Bootstrap para presentar los resultados de manera atractiva.
+- Filtrar resultados por moneda mediante un menú desplegable.
 
 ## Autor
 
-**Nombre:** Pablo Miguel Sanchez Serrano
+- Pablo Miguel Sanchez
 
-## Instrucciones de Uso
+## Acceso al Repositorio
 
-1. Clona este repositorio.
-2. Abre el archivo `index.html` en tu navegador web.
-3. Utiliza las opciones disponibles en el programa según tus necesidades.
-
-## Fórmula Utilizada
-
-El cálculo mensual se realiza utilizando la fórmula:
-
-```plaintext
-Pago Mensual = Préstamo × [(Tasa de interés mensual × (1 + Tasa de interés mensual)^Número total de pagos) / ((1 + Tasa de interés mensual)^Número total de pagos - 1)]
+[Enlace al Repositorio en GitHub](https://github.com/sanchezmiguel/CoderJavaScriptB)
