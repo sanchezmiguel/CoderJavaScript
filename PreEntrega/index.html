@@ -51,6 +51,10 @@
 
 <h3>Historial de Resultados:</h3>
 <button id="clearHistoryButton" class="btn btn-danger mb-3">Vaciar Historial</button>
+<div class="mb-3">
+    <label for="currencyFilter" class="form-label">Filtrar por Moneda:</label>
+    <select id="currencyFilter" class="form-select" onchange="filtrarResultados()"></select>
+</div>
 <table id="resultsTable" class="table table-striped">
     <thead>
     <tr>

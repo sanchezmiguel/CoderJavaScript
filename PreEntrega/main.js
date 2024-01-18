@@ -97,6 +97,7 @@ function calcularCuota() {
 window.calcularCuota = calcularCuota;
 
 // Función para actualizar la tabla de resultados en la interfaz
+// En la función calcularCuota, después de agregar el nuevo resultado, actualiza la tabla de resultados y el filtro
 function actualizarTablaResultados() {
     const resultsBody = document.getElementById('resultsBody');
     resultsBody.innerHTML = '';
@@ -104,25 +105,90 @@ function actualizarTablaResultados() {
     resultados.forEach((resultado, index) => {
         const newRow = resultsBody.insertRow();
 
-        // Columnas de la fila
         const columns = [
             `Resultado ${index + 1}`,
             `$${resultado.montoPrestamo} ${resultado.tipoMoneda}`,
-            `${resultado.tasaInteres + (interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`, // Mostrar la tasa con el interés extra
-            `${(interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`, // Mostrar el interés extra
+            `${resultado.tasaInteres + (interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
+            `${(interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
             `${resultado.plazoPrestamo} meses`,
             `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
             `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
             resultado.fecha.toLocaleString()
         ];
 
-        // Agregar celdas a la fila
+        columns.forEach((column) => {
+            const cell = newRow.insertCell();
+            cell.textContent = column;
+        });
+    });
+
+    actualizarFiltroMoneda();
+}
+
+// función para actualizar el filtro de moneda
+function actualizarFiltroMoneda() {
+    const currencyFilterSelect = document.getElementById('currencyFilter');
+    const monedasUnicas = [...new Set(resultados.map(resultado => resultado.tipoMoneda))];
+
+    // Limpiar opciones existentes
+    currencyFilterSelect.innerHTML = '';
+
+    // Agregar opción de mostrar todos
+    const optionTodos = document.createElement('option');
+    optionTodos.value = 'todos';
+    optionTodos.textContent = 'Todos';
+    currencyFilterSelect.appendChild(optionTodos);
+
+    // Agregar opciones de moneda única
+    monedasUnicas.forEach((moneda) => {
+        const option = document.createElement('option');
+        option.value = moneda;
+        option.textContent = moneda;
+        currencyFilterSelect.appendChild(option);
+    });
+}
+
+// función para filtrar resultados
+window.filtrarResultados = function() {
+    const currencyFilterSelect = document.getElementById('currencyFilter');
+    const selectedCurrency = currencyFilterSelect.value;
+
+    if (selectedCurrency === 'todos') {
+        // Mostrar todos los resultados
+        actualizarTablaResultados();
+    } else {
+        // Filtrar resultados por moneda seleccionada
+        const filteredResults = resultados.filter(resultado => resultado.tipoMoneda === selectedCurrency);
+        mostrarResultadosFiltrados(filteredResults);
+    }
+}
+
+// función para mostrar resultados filtrados
+function mostrarResultadosFiltrados(resultadosFiltrados) {
+    const resultsBody = document.getElementById('resultsBody');
+    resultsBody.innerHTML = '';
+
+    resultadosFiltrados.forEach((resultado, index) => {
+        const newRow = resultsBody.insertRow();
+
+        const columns = [
+            `Resultado ${index + 1}`,
+            `$${resultado.montoPrestamo} ${resultado.tipoMoneda}`,
+            `${resultado.tasaInteres + (interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
+            `${(interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
+            `${resultado.plazoPrestamo} meses`,
+            `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
+            `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
+            resultado.fecha.toLocaleString()
+        ];
+
         columns.forEach((column) => {
             const cell = newRow.insertCell();
             cell.textContent = column;
         });
     });
 }
+
 
 // Función para actualizar la interfaz de usuario con los resultados del cálculo
 function actualizarInterfazUsuario(cuotaMensual, totalPrestamo, tipoMoneda) {
