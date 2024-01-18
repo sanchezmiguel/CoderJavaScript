@@ -19,8 +19,24 @@ class Moneda {
     }
 }
 
+// Función para cargar los resultados desde localStorage o crear una lista vacía
+function cargarResultados() {
+    const resultadosGuardados = localStorage.getItem('resultados');
+    return resultadosGuardados ? JSON.parse(resultadosGuardados) : [];
+}
+
+// Llamar a la función para cargar resultados al cargar la página
+document.addEventListener('DOMContentLoaded', function () {
+    // Load results from localStorage
+    const resultados = cargarResultados();
+
+    // Update the results table in the UI
+    actualizarTablaResultados(resultados);
+});
+
+
 // Lista para almacenar los resultados
-const resultados = [];
+const resultados = cargarResultados();
 
 // Lista de tipos de monedas
 const tiposMoneda = [
@@ -52,6 +68,8 @@ document.getElementById('clearHistoryButton').addEventListener('click', vaciarHi
 function vaciarHistorial() {
     resultados.length = 0;
     actualizarTablaResultados();
+    // Guardamos la lista actualizada en localStorage
+    localStorage.setItem('resultados', JSON.stringify(resultados));
 }
 
 // Función para formatear la moneda
@@ -106,6 +124,9 @@ function calcularCuota() {
     const nuevoResultado = new Resultado(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual, totalPrestamo, tipoMoneda);
     resultados.push(nuevoResultado);
 
+    // Guardar la lista actualizada en localStorage después de calcular la cuota
+    localStorage.setItem('resultados', JSON.stringify(resultados));
+
     actualizarTablaResultados();
 }
 
@@ -115,6 +136,7 @@ window.calcularCuota = calcularCuota;
 // Función para actualizar la tabla de resultados en la interfaz
 // En la función calcularCuota, después de agregar el nuevo resultado, actualiza la tabla de resultados y el filtro
 function actualizarTablaResultados() {
+    const resultados = cargarResultados();
     const resultsBody = document.getElementById('resultsBody');
     resultsBody.innerHTML = '';
 
@@ -169,11 +191,14 @@ window.filtrarResultados = function () {
     const currencyFilterSelect = document.getElementById('currencyFilter');
     const selectedCurrency = currencyFilterSelect.value;
 
+    console.log(selectedCurrency)
+
     if (selectedCurrency === 'todos') {
         // Mostrar todos los resultados
         actualizarTablaResultados();
     } else {
         // Filtrar resultados por moneda seleccionada
+        const resultados = cargarResultados();
         const filteredResults = resultados.filter(resultado => resultado.tipoMoneda === selectedCurrency);
         mostrarResultadosFiltrados(filteredResults);
     }
