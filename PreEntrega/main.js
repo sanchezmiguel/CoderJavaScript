@@ -138,14 +138,7 @@ function calcularCuota() {
     const currencyElement = document.getElementById('currency');
 
     // Verificar si algún campo obligatorio está vacío
-    if (!montoElement.value || !tasaElement.value || !plazoElement.value || !currencyElement.value) {
-        // Mostrar SweetAlert de aviso
-        swal.fire({
-            icon: 'warning',
-            title: 'Campos Incompletos',
-            text: 'Por favor, complete todos los campos antes de calcular la cuota.',
-            confirmButtonText: 'Aceptar'
-        });
+    if (!validarCamposEntrada(montoElement.value, tasaElement.value, plazoElement.value, currencyElement.value)) {
         return;
     }
 
@@ -154,15 +147,11 @@ function calcularCuota() {
     const plazoPrestamo = parseInt(plazoElement.value);
     const tipoMoneda = currencyElement.value;
 
-    // Verificar la validez de los valores ingresados
-    if (isNaN(montoPrestamo) || isNaN(tasaInteres) || isNaN(plazoPrestamo) || montoPrestamo <= 0 || tasaInteres <= 0 || plazoPrestamo <= 0) {
-        // Mostrar SweetAlert de advertencia
-        swal.fire({
-            icon: 'warning',
-            title: 'Valores no Válidos',
-            text: 'Ingrese valores numéricos y mayores que cero en los campos correspondientes.',
-            confirmButtonText: 'Aceptar'
-        });
+    if (!validarValoresIngresados(montoPrestamo, tasaInteres, plazoPrestamo)) {
+        return;
+    }
+
+    if (!validarMontosTasasPlazos(montoPrestamo, tasaInteres, plazoPrestamo, tipoMoneda)) {
         return;
     }
 
@@ -195,6 +184,56 @@ function calcularCuota() {
     }).showToast();
 
     actualizarTablaResultados();
+}
+
+// Función para validar si algún campo obligatorio está vacío
+function validarCamposEntrada(monto, tasa, plazo, moneda) {
+    if (!monto || !tasa || !plazo || !moneda) {
+        mostrarAlerta('warning', 'Campos Incompletos', 'Por favor, complete todos los campos antes de calcular la cuota.');
+        return false;
+    }
+    return true;
+}
+
+// Función para validar si los valores ingresados son numéricos y mayores que cero
+function validarValoresIngresados(monto, tasa, plazo) {
+    if (isNaN(monto) || isNaN(tasa) || isNaN(plazo) || monto <= 0 || tasa <= 0 || plazo <= 0) {
+        mostrarAlerta('warning', 'Valores no Válidos', 'Ingrese valores numéricos y mayores que cero en los campos correspondientes.');
+        return false;
+    }
+    return true;
+}
+
+// Función para validar montos, tasas y plazos
+function validarMontosTasasPlazos(monto, tasa, plazo, moneda) {
+    const montoMaximo =  1000000;
+    if (monto > montoMaximo) {
+        mostrarAlerta('warning', 'Monto Excedido', `El monto del préstamo no puede ser superior a ${formatearMoneda(montoMaximo, moneda)}.`);
+        return false;
+    }
+
+    if (tasa > 500) {
+        mostrarAlerta('warning', 'Tasa de Interés Excedida', 'La tasa de interés no puede ser superior al 500%.');
+        return false;
+    }
+
+    const plazoMaximo = 10 * 12; // En años
+    if (plazo > plazoMaximo) {
+        mostrarAlerta('warning', 'Plazo Excedido', 'El plazo del préstamo no puede ser superior a 10 años.');
+        return false;
+    }
+
+    return true;
+}
+
+// Función para mostrar alerta SweetAlert
+function mostrarAlerta(icono, titulo, texto) {
+    swal.fire({
+        icon: icono,
+        title: titulo,
+        text: texto,
+        confirmButtonText: 'Aceptar'
+    });
 }
 
 // Hacer la función accesible globalmente
