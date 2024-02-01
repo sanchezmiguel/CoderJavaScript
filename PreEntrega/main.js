@@ -1,5 +1,6 @@
 // main.js
 
+
 class Resultado {
     constructor(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual, totalPrestamo, tipoMoneda) {
         this.montoPrestamo = montoPrestamo;
@@ -74,7 +75,11 @@ async function cargarTiposMoneda() {
             }
         }
     } catch (error) {
-        console.error('Error al cargar tipos de moneda:', error);
+        swal({
+            title: 'Error',
+            text: 'Error al cargar tipos de moneda. Por favor, inténtalo de nuevo más tarde.',
+            icon: 'error',
+        });
     }
 }
 
@@ -86,11 +91,34 @@ document.getElementById('clearHistoryButton').addEventListener('click', vaciarHi
 
 // Función para vaciar el historial de resultados
 function vaciarHistorial() {
-    resultados.length = 0;
-    actualizarTablaResultados();
-    // Guardamos la lista actualizada en localStorage
-    localStorage.setItem('resultados', JSON.stringify(resultados));
+    if (resultados.length === 0) {
+        // Mostrar SweetAlert indicando que el historial ya está vacío
+        swal.fire({
+            icon: 'info',
+            title: 'Historial Vacío',
+            text: 'El historial de resultados ya está vacío.',
+            confirmButtonText: 'Aceptar'
+        });
+    } else {
+        // Historial no está vacío, proceder con la limpieza
+        resultados.length = 0;
+        actualizarTablaResultados();
+        // Guardamos la lista actualizada en localStorage
+        localStorage.setItem('resultados', JSON.stringify(resultados));
+
+        // Mostrar SweetAlert después de limpiar el historial
+        swal.fire({
+            icon: 'success',
+            title: 'Historial Vacío',
+            text: 'Se ha vaciado el historial de resultados con éxito.',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+            // Recargar la página después de cerrar el SweetAlert
+            location.reload();
+        });
+    }
 }
+
 
 // Función para formatear la moneda
 function formatearMoneda(valor, tipoMoneda) {
@@ -114,8 +142,15 @@ function calcularCuota() {
     const currencyElement = document.getElementById('currency');
     const resultadoElemento = document.getElementById('result');
 
-    if (!montoElement.value || !tasaElement.value || !plazoElement.value) {
-        resultadoElemento.textContent = 'Por favor, complete todos los campos.';
+    // Verificar si algún campo obligatorio está vacío
+    if (!montoElement.value || !tasaElement.value || !plazoElement.value || !currencyElement.value) {
+        // Mostrar SweetAlert de aviso
+        swal.fire({
+            icon: 'warning',
+            title: 'Campos Incompletos',
+            text: 'Por favor, complete todos los campos antes de calcular la cuota.',
+            confirmButtonText: 'Aceptar'
+        });
         return;
     }
 
@@ -124,8 +159,15 @@ function calcularCuota() {
     const plazoPrestamo = parseInt(plazoElement.value);
     const tipoMoneda = currencyElement.value;
 
+    // Verificar la validez de los valores ingresados
     if (isNaN(montoPrestamo) || isNaN(tasaInteres) || isNaN(plazoPrestamo) || montoPrestamo <= 0 || tasaInteres <= 0 || plazoPrestamo <= 0) {
-        resultadoElemento.textContent = 'Ingrese valores numéricos y mayores que cero.';
+        // Mostrar SweetAlert de advertencia
+        swal.fire({
+            icon: 'warning',
+            title: 'Valores no Válidos',
+            text: 'Ingrese valores numéricos y mayores que cero en los campos correspondientes.',
+            confirmButtonText: 'Aceptar'
+        });
         return;
     }
 
@@ -211,7 +253,7 @@ window.filtrarResultados = function () {
     const currencyFilterSelect = document.getElementById('currencyFilter');
     const selectedCurrency = currencyFilterSelect.value;
 
-    console.log(selectedCurrency)
+    //console.log(selectedCurrency)
 
     if (selectedCurrency === 'todos') {
         // Mostrar todos los resultados
