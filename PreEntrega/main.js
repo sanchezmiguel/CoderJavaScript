@@ -47,15 +47,35 @@ const tiposMoneda = [
 ];
 
 // Función para cargar tipos de moneda en la lista desplegable
-function cargarTiposMoneda() {
+async function cargarTiposMoneda() {
     const currencySelect = document.getElementById('currency');
 
-    tiposMoneda.forEach((tipo) => {
-        const option = document.createElement('option');
-        option.value = tipo.codigo;
-        option.textContent = `${tipo.nombre} (${tipo.codigo})`;
-        currencySelect.appendChild(option);
-    });
+    try {
+        // Fetch para obtener las tasas de cambio
+        const response = await fetch('https://open.er-api.com/v6/latest');
+        const data = await response.json();
+
+        // Limpiar el select antes de agregar nuevas opciones
+        currencySelect.innerHTML = '';
+
+        // Agregar la moneda base (en este caso, USD)
+        const baseCurrencyOption = document.createElement('option');
+        baseCurrencyOption.value = 'USD';
+        baseCurrencyOption.textContent = 'Dólar estadounidense (USD)';
+        currencySelect.appendChild(baseCurrencyOption);
+
+        // Agregar otras monedas con tasas de cambio
+        for (const currencyCode in data.rates) {
+            if (data.rates.hasOwnProperty(currencyCode)) {
+                const option = document.createElement('option');
+                option.value = currencyCode;
+                option.textContent = `${currencyCode} (${data.rates[currencyCode]})`;
+                currencySelect.appendChild(option);
+            }
+        }
+    } catch (error) {
+        console.error('Error al cargar tipos de moneda:', error);
+    }
 }
 
 // Llamar a la función para cargar tipos de moneda al cargar la página
