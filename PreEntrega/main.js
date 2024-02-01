@@ -140,7 +140,6 @@ function calcularCuota() {
     const tasaElement = document.getElementById('interestRate');
     const plazoElement = document.getElementById('loanTerm');
     const currencyElement = document.getElementById('currency');
-    const resultadoElemento = document.getElementById('result');
 
     // Verificar si algún campo obligatorio está vacío
     if (!montoElement.value || !tasaElement.value || !plazoElement.value || !currencyElement.value) {
@@ -188,6 +187,16 @@ function calcularCuota() {
 
     // Guardar la lista actualizada en localStorage después de calcular la cuota
     localStorage.setItem('resultados', JSON.stringify(resultados));
+
+    // Mostrar mensaje Toastify de éxito
+    Toastify({
+        text: `Cálculo realizado con éxito.\nCuota Mensual: ${formatearMoneda(cuotaMensual, tipoMoneda)}\nTotal del Préstamo: ${formatearMoneda(totalPrestamo, tipoMoneda)}`,
+        duration: 10000,  // Duración del mensaje en milisegundos
+        gravity: 'bottom',  // Posición del mensaje (ejemplo: 'top', 'bottom', 'center')
+        position: 'right',  // Aliniamiento del mensaje (ejemplo: 'left', 'center', 'right')
+        backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',  // Colores de fondo
+        stopOnFocus: true,  // Detener el mensaje al enfocar en la ventana
+    }).showToast();
 
     actualizarTablaResultados();
 }
