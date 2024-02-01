@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "luxon": "^3.4.4",
     "sweetalert2": "^11.10.4"
   }
 }

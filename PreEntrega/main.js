@@ -1,5 +1,5 @@
 // main.js
-
+const { DateTime } = window.luxon;
 
 class Resultado {
     constructor(montoPrestamo, tasaInteres, plazoPrestamo, cuotaMensual, totalPrestamo, tipoMoneda) {
@@ -9,7 +9,7 @@ class Resultado {
         this.cuotaMensual = cuotaMensual;
         this.totalPrestamo = totalPrestamo;
         this.tipoMoneda = tipoMoneda;
-        this.fecha = new Date(); // fecha en la que se generó el resultado
+        this.fecha = DateTime.local().toLocaleString(DateTime.DATE_HUGE);
     }
 }
 
@@ -222,7 +222,7 @@ function actualizarTablaResultados() {
             `${resultado.plazoPrestamo} meses`,
             `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
             `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
-            resultado.fecha.toLocaleString()
+            `${resultado.fecha}`,
         ];
 
         columns.forEach((column) => {
@@ -291,7 +291,7 @@ function mostrarResultadosFiltrados(resultadosFiltrados) {
             `${resultado.plazoPrestamo} meses`,
             `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
             `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
-            resultado.fecha.toLocaleString()
+            `${resultado.fecha}`,
         ];
 
         columns.forEach((column) => {
@@ -309,4 +309,8 @@ function actualizarInterfazUsuario(cuotaMensual, totalPrestamo, tipoMoneda) {
 
     monthlyPaymentSpan.textContent = `${formatearMoneda(cuotaMensual, tipoMoneda)}`;
     totalLoanSpan.textContent = `${formatearMoneda(totalPrestamo, tipoMoneda)}`;
+}
+
+function formatDateTime(datetime){
+
 }
