@@ -13,13 +13,6 @@ class Resultado {
     }
 }
 
-class Moneda {
-    constructor(codigo, nombre) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-    }
-}
-
 // Función para cargar los resultados desde localStorage o crear una lista vacía
 function cargarResultados() {
     const resultadosGuardados = localStorage.getItem('resultados');
@@ -38,14 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Lista para almacenar los resultados
 const resultados = cargarResultados();
-
-// Lista de tipos de monedas
-const tiposMoneda = [
-    new Moneda("USD", "Dólar estadounidense"),
-    new Moneda("UYU", "Peso Uruguayo"),
-    new Moneda("EUR", "Euro"),
-    new Moneda("GBP", "Libra esterlina"),
-];
 
 // Función para cargar tipos de moneda en la lista desplegable
 async function cargarTiposMoneda() {
@@ -100,31 +85,42 @@ function vaciarHistorial() {
             confirmButtonText: 'Aceptar'
         });
     } else {
-        // Historial no está vacío, proceder con la limpieza
-        resultados.length = 0;
-        actualizarTablaResultados();
-        // Guardamos la lista actualizada en localStorage
-        localStorage.setItem('resultados', JSON.stringify(resultados));
-
-        // Mostrar SweetAlert después de limpiar el historial
+        // El historial no está vacío, continuar con el diálogo de confirmación
         swal.fire({
-            icon: 'success',
-            title: 'Historial Vacío',
-            text: 'Se ha vaciado el historial de resultados con éxito.',
-            confirmButtonText: 'Aceptar'
-        }).then(() => {
-            // Recargar la página después de cerrar el SweetAlert
-            location.reload();
+            icon: 'warning',
+            title: '¿Vaciar Historial?',
+            text: 'Al vaciar el historial, se perderán todos los resultados almacenados. ¿Está seguro que desea continuar?',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, Vaciar Historial',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // El usuario hizo clic en 'Sí, Vaciar Historial'
+                resultados.length = 0;
+                actualizarTablaResultados();
+                // Guardar la lista actualizada en localStorage
+                localStorage.setItem('resultados', JSON.stringify(resultados));
+
+                // Mostrar SweetAlert de éxito después de vaciar el historial
+                swal.fire({
+                    icon: 'success',
+                    title: 'Historial Vacío',
+                    text: 'Se ha vaciado el historial de resultados con éxito.',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    // Recargar la página después de cerrar el SweetAlert
+                    location.reload();
+                });
+            }
+            // else, el usuario hizo clic en 'Cancelar'
         });
     }
 }
-
 
 // Función para formatear la moneda
 function formatearMoneda(valor, tipoMoneda) {
     return new Intl.NumberFormat('es', {style: 'currency', currency: tipoMoneda}).format(valor);
 }
-
 
 // Diccionario de tipos de moneda y sus intereses extras
 const interesesExtras = {
@@ -204,6 +200,20 @@ function calcularCuota() {
 // Hacer la función accesible globalmente
 window.calcularCuota = calcularCuota;
 
+function generarContenidoFilaResultado(resultado, index) {
+    return [
+        `Resultado ${index + 1}`,
+        `$${resultado.montoPrestamo} ${resultado.tipoMoneda}`,
+        `${resultado.tasaInteres + (interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
+        `${(interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
+        `${resultado.plazoPrestamo} meses`,
+        `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
+        `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
+        `${resultado.fecha}`,
+    ];
+}
+
+
 // Función para actualizar la tabla de resultados en la interfaz
 // En la función calcularCuota, después de agregar el nuevo resultado, actualiza la tabla de resultados y el filtro
 function actualizarTablaResultados() {
@@ -214,16 +224,7 @@ function actualizarTablaResultados() {
     resultados.forEach((resultado, index) => {
         const newRow = resultsBody.insertRow();
 
-        const columns = [
-            `Resultado ${index + 1}`,
-            `$${resultado.montoPrestamo} ${resultado.tipoMoneda}`,
-            `${resultado.tasaInteres + (interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
-            `${(interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
-            `${resultado.plazoPrestamo} meses`,
-            `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
-            `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
-            `${resultado.fecha}`,
-        ];
+        const columns = generarContenidoFilaResultado(resultado, index);
 
         columns.forEach((column) => {
             const cell = newRow.insertCell();
@@ -262,8 +263,6 @@ window.filtrarResultados = function () {
     const currencyFilterSelect = document.getElementById('currencyFilter');
     const selectedCurrency = currencyFilterSelect.value;
 
-    //console.log(selectedCurrency)
-
     if (selectedCurrency === 'todos') {
         // Mostrar todos los resultados
         actualizarTablaResultados();
@@ -282,18 +281,7 @@ function mostrarResultadosFiltrados(resultadosFiltrados) {
 
     resultadosFiltrados.forEach((resultado, index) => {
         const newRow = resultsBody.insertRow();
-
-        const columns = [
-            `Resultado ${index + 1}`,
-            `$${resultado.montoPrestamo} ${resultado.tipoMoneda}`,
-            `${resultado.tasaInteres + (interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
-            `${(interesesExtras.hasOwnProperty(resultado.tipoMoneda) ? interesesExtras[resultado.tipoMoneda] * 100 : 0)}%`,
-            `${resultado.plazoPrestamo} meses`,
-            `$${resultado.cuotaMensual.toFixed(2)} ${resultado.tipoMoneda}`,
-            `$${resultado.totalPrestamo.toFixed(2)} ${resultado.tipoMoneda}`,
-            `${resultado.fecha}`,
-        ];
-
+        const columns = generarContenidoFilaResultado(resultado, index);
         columns.forEach((column) => {
             const cell = newRow.insertCell();
             cell.textContent = column;
@@ -309,8 +297,4 @@ function actualizarInterfazUsuario(cuotaMensual, totalPrestamo, tipoMoneda) {
 
     monthlyPaymentSpan.textContent = `${formatearMoneda(cuotaMensual, tipoMoneda)}`;
     totalLoanSpan.textContent = `${formatearMoneda(totalPrestamo, tipoMoneda)}`;
-}
-
-function formatDateTime(datetime){
-
 }
